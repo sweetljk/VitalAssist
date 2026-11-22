@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "vitalassist",
+  "version": "${version}",
+  "name": "VitalAssist",
+  "description": "A configurable client-side survival utility mod for Fabric, featuring automation, warnings, rendering helpers, chat tools, and DeepSeek-powered ZhouLi chat rewriting.",
+  "authors": [
+    "sweetljk"
+  ],
+  "contact": {
+    "homepage": "https://github.com/sweetljk/VitalAssist",
+    "sources": "https://github.com/sweetljk/VitalAssist",
+    "issues": "https://github.com/sweetljk/VitalAssist/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/vitalassist/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.sweetljk.vitalassist.client.VitalAssistClient"
+    ],
+    "main": [
+      "com.sweetljk.vitalassist.VitalAssist"
+    ],
+    "modmenu": [
+      "com.sweetljk.vitalassist.config.ModMenu"
+    ]
+  },
+  "mixins": [
+    "vitalassist.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "malilib": "*",
+    "modmenu": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
