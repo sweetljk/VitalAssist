@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -36,12 +36,12 @@ final class InventoryHelper {
 
     static void swapToOffhand(Minecraft client, int inventorySlot) {
         if (client.player == null || client.gameMode == null) return;
-        client.gameMode.handleContainerInput(client.player.containerMenu.containerId, toScreenSlot(inventorySlot), 40, ContainerInput.SWAP, client.player);
+        client.gameMode.handleInventoryMouseClick(client.player.containerMenu.containerId, toScreenSlot(inventorySlot), 40, ClickType.SWAP, client.player);
     }
 
     static void swapWithHotbar(Minecraft client, int inventorySlot, int hotbarSlot) {
         if (client.player == null || client.gameMode == null) return;
-        client.gameMode.handleContainerInput(client.player.containerMenu.containerId, toScreenSlot(inventorySlot), hotbarSlot, ContainerInput.SWAP, client.player);
+        client.gameMode.handleInventoryMouseClick(client.player.containerMenu.containerId, toScreenSlot(inventorySlot), hotbarSlot, ClickType.SWAP, client.player);
     }
 
     static int getSelectedHotbarSlot(Minecraft client) {

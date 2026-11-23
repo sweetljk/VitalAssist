@@ -200,8 +200,8 @@ public class ConfigUi extends GuiConfigsBase {
         Minecraft client = Minecraft.getInstance();
         if (client.player != null) {
             String color = success ? "§a" : "§c";
-            client.player.sendSystemMessage(Component.literal(
-                    "§6[VitalAssist] " + kind.label + "：" + color + message));
+            client.player.displayClientMessage(Component.literal(
+                    "§6[VitalAssist] " + kind.label + "：" + color + message), false);
         }
     }
 

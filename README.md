@@ -4,14 +4,14 @@
 
 # VitalAssist
 
-**适用于 Fabric 26.1.2 的客户端生存辅助 Mod**
+**适用于 Fabric 1.21.11 的客户端生存辅助 Mod**
 
 自动工具 / 自动进食 / 自动图腾 / 自由视角 / 珍珠抛物线 / 电影视角 / 聊天翻译 / 合乎周礼
 
-[![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62B47A.svg)](#)
-[![Fabric Loader](https://img.shields.io/badge/Fabric%20Loader-%3E%3D0.19.1-DBB69C.svg)](#)
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11-62B47A.svg)](#)
+[![Fabric Loader](https://img.shields.io/badge/Fabric%20Loader-%3E%3D0.16.0-DBB69C.svg)](#)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Java](https://img.shields.io/badge/Java-25-orange.svg)](#)
+[![Java](https://img.shields.io/badge/Java-21-orange.svg)](#)
 
 [下载](#下载) · [功能](#功能) · [安装](#安装) · [配置](#配置) · [从源码构建](#从源码构建) · [来源](#来源与致谢)
 
@@ -121,7 +121,7 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 
 ## 安装
 
-1. 安装 **Fabric Loader** `>= 0.19.1`（Minecraft `26.1.2`）
+1. 安装 **Fabric Loader** `>= 0.16.0`（Minecraft `1.21.11`）
 2. 将 `VitalAssist-1.3.jar` 放入 `.minecraft/mods`
 3. 安装依赖 Mod（见下表）
 4. 启动游戏，按 `Z + L` 打开配置界面
@@ -130,7 +130,7 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 
 | Mod | 是否必需 | 说明 |
 |---|---|---|
-| [Fabric API](https://modrinth.com/mod/fabric-api) | 必需 | `0.153.0+26.1.2` 或更新 |
+| [Fabric API](https://modrinth.com/mod/fabric-api) | 必需 | `0.141.6+1.21.11` 或更新 |
 | [malilib](https://modrinth.com/mod/malilib) | 必需 | 提供配置界面 |
 | [Mod Menu](https://modrinth.com/mod/modmenu) | 推荐 | 便于管理配置 |
 | Quick Shulker | 可选 | 潜影盒补货功能需要 |
@@ -152,7 +152,7 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 ## 从源码构建
 
 ```bash
-# 需要 JDK 25
+# 需要 JDK 21
 ./gradlew build
 ```
 

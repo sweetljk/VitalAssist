@@ -7,7 +7,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.ShulkerBoxMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -39,7 +39,7 @@ public final class ShulkerRestock {
             Configs.AUTO_TOTEM_SHULKER_RESTOCK.setBooleanValue(false);
             ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
                 if (client.player != null) {
-                    client.player.sendSystemMessage(Component.literal("§6[VitalAssist] §c未检测到 Quick Shulker mod，潜影盒补货功能已禁用"));
+                    client.player.displayClientMessage(Component.literal("§6[VitalAssist] §c未检测到 Quick Shulker mod，潜影盒补货功能已禁用"), false);
                 }
             });
         }
@@ -56,13 +56,13 @@ public final class ShulkerRestock {
 
         int syncId = client.player.containerMenu.containerId;
         if (pendingSacrificeSlot != -1) {
-            client.gameMode.handleContainerInput(syncId, toOpenShulkerPlayerSlot(pendingSacrificeSlot), 0, ContainerInput.QUICK_MOVE, client.player);
+            client.gameMode.handleInventoryMouseClick(syncId, toOpenShulkerPlayerSlot(pendingSacrificeSlot), 0, ClickType.QUICK_MOVE, client.player);
             pendingSacrificeSlot = -1;
             return;
         }
 
         if (!pendingTookTarget) {
-            client.gameMode.handleContainerInput(syncId, pendingContainerSlot, 0, ContainerInput.PICKUP, client.player);
+            client.gameMode.handleInventoryMouseClick(syncId, pendingContainerSlot, 0, ClickType.PICKUP, client.player);
             pendingTookTarget = true;
             return;
         }
@@ -72,7 +72,7 @@ public final class ShulkerRestock {
             resetPending();
             return;
         }
-        client.gameMode.handleContainerInput(syncId, toOpenShulkerPlayerSlot(pendingTargetSlot), 0, ContainerInput.PICKUP, client.player);
+        client.gameMode.handleInventoryMouseClick(syncId, toOpenShulkerPlayerSlot(pendingTargetSlot), 0, ClickType.PICKUP, client.player);
         closeHandledScreen(client);
         resetPending();
     }
@@ -246,7 +246,7 @@ public final class ShulkerRestock {
         long time = client.level.getGameTime();
         if (time - lastMissingWarning < 40) return;
         lastMissingWarning = time;
-        client.player.sendSystemMessage(Component.literal("§6[VitalAssist] §c潜影盒内没有可补充的 " + targetItem.getName(new ItemStack(targetItem)).getString()));
+        client.player.displayClientMessage(Component.literal("§6[VitalAssist] §c潜影盒内没有可补充的 " + targetItem.getName(new ItemStack(targetItem)).getString()), false);
     }
 
     private static void warnFullInventory(Minecraft client, Item targetItem) {
@@ -254,7 +254,7 @@ public final class ShulkerRestock {
         long time = client.level.getGameTime();
         if (time - lastFullInventoryWarning < 40) return;
         lastFullInventoryWarning = time;
-        client.player.sendSystemMessage(Component.literal("§6[VitalAssist] §c背包已满，无法从潜影盒补充 " + targetItem.getName(new ItemStack(targetItem)).getString()));
+        client.player.displayClientMessage(Component.literal("§6[VitalAssist] §c背包已满，无法从潜影盒补充 " + targetItem.getName(new ItemStack(targetItem)).getString()), false);
     }
 
     private static boolean isShulkerBox(ItemStack stack) {

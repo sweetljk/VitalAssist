@@ -13,7 +13,7 @@ import com.sweetljk.vitalassist.cine.CineProbe;
 @Mixin(KeyboardHandler.class)
 public abstract class CineKeyboardMixin {
 
-    @Inject(method = "keyPress(JILnet/minecraft/client/input/KeyEvent;)V", at = @At("HEAD"), require = 1, remap = false)
+    @Inject(method = "keyPress(JILnet/minecraft/client/input/KeyEvent;)V", at = @At("HEAD"), require = 1)
     private void vitalassist$cineKey(long window, int action, KeyEvent event, CallbackInfo ci) {
         if (window != 0L && window == Minecraft.getInstance().getWindow().handle()) {
             CineProbe.onKey(event.key(), action);

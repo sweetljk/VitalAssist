@@ -12,8 +12,8 @@ public abstract class CineRollMixin {
 
     @ModifyArg(method = "setRotation(FF)V",
             at = @At(value = "INVOKE",
-                    target = "Lorg/joml/Quaternionf;rotationYXZ(FFF)Lorg/joml/Quaternionf;", remap = false),
-            index = 2, require = 1, allow = 1, remap = false)
+                    target = "Lorg/joml/Quaternionf;rotationYXZ(FFF)Lorg/joml/Quaternionf;"),
+            index = 2, require = 1, allow = 1)
     private float vitalassist$cineRollRadians(float originalRollRadians) {
         if (!(this instanceof CineCameraRotation rotation)) return originalRollRadians;
         float roll = rotation.cineRollDegrees();

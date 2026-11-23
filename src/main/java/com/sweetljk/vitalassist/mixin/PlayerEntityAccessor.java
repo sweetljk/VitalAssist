@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(Avatar.class)
 public interface PlayerEntityAccessor {
-    @Accessor(value = "DATA_PLAYER_MODE_CUSTOMISATION", remap = false)
+    @Accessor("DATA_PLAYER_MODE_CUSTOMISATION")
     static EntityDataAccessor<Byte> vitalassist$getPlayerModelParts() {
         throw new AssertionError();
     }

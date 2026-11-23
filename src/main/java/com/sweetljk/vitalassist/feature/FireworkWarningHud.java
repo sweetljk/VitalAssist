@@ -3,7 +3,7 @@ package com.sweetljk.vitalassist.feature;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +23,7 @@ public final class FireworkWarningHud {
         );
     }
 
-    private static void render(GuiGraphicsExtractor context) {
+    private static void render(GuiGraphics context) {
         Minecraft client = Minecraft.getInstance();
         if (client.player == null) return;
 
@@ -59,8 +59,8 @@ public final class FireworkWarningHud {
         return count;
     }
 
-    private static void drawCentered(GuiGraphicsExtractor context, Minecraft client, Component text, int y, int color) {
+    private static void drawCentered(GuiGraphics context, Minecraft client, Component text, int y, int color) {
         int x = (context.guiWidth() - client.font.width(text)) / 2;
-        context.text(client.font, text, x, y, color, true);
+        context.drawString(client.font, text, x, y, color, true);
     }
 }

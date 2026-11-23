@@ -1,5 +1,5 @@
 plugins {
-    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+    id 'fabric-loom' version "${loom_version}"
     id 'maven-publish'
 }
 
@@ -11,7 +11,6 @@ base {
 }
 
 loom {
-
     mods {
         "vitalassist" {
             sourceSet sourceSets.main
@@ -31,10 +30,10 @@ repositories {
         url = "https://maven.terraformersmc.com/"
     }
     maven {
-        name = "CurseMaven"
-        url = "https://cursemaven.com/"
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
         content {
-            includeGroup "curse.maven"
+            includeGroup "maven.modrinth"
         }
     }
 }
@@ -42,12 +41,12 @@ repositories {
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    implementation "curse.maven:malilib-303119:${project.malilib_file_id}"
-    implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
-    implementation files("quickshulker-3.0.1-26.1.jar")
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    modImplementation "maven.modrinth:malilib:${project.malilib_version}"
+    modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {
@@ -63,7 +62,7 @@ processResources {
     }
 }
 
-def targetJavaVersion = 25
+def targetJavaVersion = 21
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
@@ -90,11 +89,7 @@ publishing {
         }
     }
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
         // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
     }
 }

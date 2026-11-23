@@ -11,12 +11,12 @@ import com.sweetljk.vitalassist.feature.AutoTool;
 
 @Mixin(MultiPlayerGameMode.class)
 public abstract class ClientPlayerInteractionManagerMixin {
-    @Inject(method = "startDestroyBlock", at = @At("HEAD"), remap = false)
+    @Inject(method = "startDestroyBlock", at = @At("HEAD"))
     private void vitalassist$startDestroyBlock(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
         AutoTool.beforeBlockAttack(pos);
     }
 
-    @Inject(method = "continueDestroyBlock", at = @At("HEAD"), remap = false)
+    @Inject(method = "continueDestroyBlock", at = @At("HEAD"))
     private void vitalassist$continueDestroyBlock(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
         AutoTool.beforeBlockAttack(pos);
     }

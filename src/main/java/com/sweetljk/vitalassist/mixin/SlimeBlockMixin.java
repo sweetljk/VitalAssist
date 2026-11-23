@@ -14,7 +14,7 @@ import com.sweetljk.vitalassist.config.Configs;
 
 @Mixin(SlimeBlock.class)
 public abstract class SlimeBlockMixin {
-    @Inject(method = "stepOn", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "stepOn", at = @At("HEAD"), cancellable = true)
     private void vitalassist$stepOn(Level world, BlockPos pos, BlockState state, Entity entity, CallbackInfo ci) {
         if (Configs.NO_SLOW.getBooleanValue() && entity == Minecraft.getInstance().player) ci.cancel();
     }

@@ -1,6 +1,6 @@
 # VitalAssist
 
-A client-side survival utility mod for Fabric 26.1.2. Provides various quality-of-life features with a configurable GUI and hotkeys via malilib.
+A client-side survival utility mod for Fabric 1.21.11. Provides various quality-of-life features with a configurable GUI and hotkeys via malilib.
 
 ## Features
 
@@ -30,7 +30,7 @@ Released under the MIT License. See `LICENSE`.
 
 ## Dependencies
 
-- **Fabric Loader** >= 0.19.1
+- **Fabric Loader** >= 0.16.0
 - **Fabric API** (latest 0.153.0+ recommended)
 - **malilib** (required — provides config UI)
 - **Mod Menu** (recommended for easy config management)

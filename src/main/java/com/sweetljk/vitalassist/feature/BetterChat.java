@@ -1,8 +1,7 @@
 package com.sweetljk.vitalassist.feature;
 
-import net.minecraft.client.multiplayer.chat.GuiMessage;
-import net.minecraft.client.multiplayer.chat.GuiMessageSource;
-import net.minecraft.client.multiplayer.chat.GuiMessageTag;
+import net.minecraft.client.GuiMessage;
+import net.minecraft.client.GuiMessageTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MessageSignature;
 import com.sweetljk.vitalassist.config.Configs;
@@ -20,7 +19,7 @@ public final class BetterChat {
     private BetterChat() {
     }
 
-    public static boolean handleMessage(List<GuiMessage> messages, Refresher refresher, Component message, MessageSignature signature, GuiMessageSource source, GuiMessageTag indicator, int ticks) {
+    public static boolean handleMessage(List<GuiMessage> messages, Refresher refresher, Component message, MessageSignature signature, GuiMessageTag indicator, int ticks) {
         if (!Configs.BETTER_CHAT.getBooleanValue()) return false;
 
         String content = message.getString();
@@ -34,7 +33,7 @@ public final class BetterChat {
 
         folded.count++;
         removeExisting(messages, content, folded.count - 1);
-        messages.add(0, new GuiMessage(ticks, Component.literal(content + "(" + folded.count + ")"), signature, source, indicator));
+        messages.add(0, new GuiMessage(ticks, Component.literal(content + "(" + folded.count + ")"), signature, indicator));
         refresher.refresh();
         return true;
     }

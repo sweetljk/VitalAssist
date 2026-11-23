@@ -13,21 +13,21 @@ import com.sweetljk.vitalassist.cine.CineProbe;
 @Mixin(MouseHandler.class)
 public abstract class CineMouseMixin {
 
-    @Inject(method = "onButton(JLnet/minecraft/client/input/MouseButtonInfo;I)V", at = @At("HEAD"), require = 1, remap = false)
+    @Inject(method = "onButton(JLnet/minecraft/client/input/MouseButtonInfo;I)V", at = @At("HEAD"), require = 1)
     private void vitalassist$cineButton(long window, MouseButtonInfo info, int action, CallbackInfo ci) {
         if (window != 0L && window == Minecraft.getInstance().getWindow().handle()) {
             CineProbe.onButton(info.button(), action);
         }
     }
 
-    @Inject(method = "onScroll(JDD)V", at = @At("HEAD"), require = 1, remap = false)
+    @Inject(method = "onScroll(JDD)V", at = @At("HEAD"), require = 1)
     private void vitalassist$cineScroll(long window, double x, double y, CallbackInfo ci) {
         if (window != 0L && window == Minecraft.getInstance().getWindow().handle()) {
             CineProbe.onScroll(x, y);
         }
     }
 
-    @Inject(method = "onMove(JDD)V", at = @At("HEAD"), require = 1, remap = false)
+    @Inject(method = "onMove(JDD)V", at = @At("HEAD"), require = 1)
     private void vitalassist$cineMove(long window, double x, double y, CallbackInfo ci) {
         if (window != 0L && window == Minecraft.getInstance().getWindow().handle()) {
             CineProbe.onMove(x, y);

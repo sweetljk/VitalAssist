@@ -13,7 +13,7 @@ import com.sweetljk.vitalassist.feature.HaoQiChongTian;
 
 @Mixin(KeyboardInput.class)
 public abstract class KeyboardInputMixin extends ClientInput {
-    @Inject(method = "tick", at = @At("TAIL"), remap = false)
+    @Inject(method = "tick", at = @At("TAIL"))
     private void vitalassist$tick(CallbackInfo ci) {
         if (!Freecam.isActive() && !HaoQiChongTian.isFrozen()) return;
         this.keyPresses = Input.EMPTY;

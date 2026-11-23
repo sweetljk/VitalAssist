@@ -9,7 +9,7 @@ import com.sweetljk.vitalassist.feature.Freecam;
 
 @Mixin(KeyMapping.class)
 public abstract class KeyBindingMixin {
-    @Inject(method = "setDown", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "setDown", at = @At("HEAD"), cancellable = true)
     private void vitalassist$setDown(boolean pressed, CallbackInfo ci) {
         if (Freecam.handleMovementKey((KeyMapping) (Object) this, pressed)) ci.cancel();
     }

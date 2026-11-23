@@ -30,7 +30,7 @@
     "vitalassist.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=${loader_version}",
+    "fabricloader": ">=0.16.0",
     "fabric-api": "*",
     "malilib": "*",
     "modmenu": "*",

@@ -11,7 +11,7 @@ import com.sweetljk.vitalassist.config.Configs;
 
 @Mixin(EntityRenderer.class)
 public abstract class EntityRendererMixin<T extends Entity> {
-    @Inject(method = "getNameTag", at = @At("RETURN"), cancellable = true, remap = false)
+    @Inject(method = "getNameTag", at = @At("RETURN"), cancellable = true)
     private void vitalassist$getNameTag(T entity, CallbackInfoReturnable<Component> cir) {
         if (Configs.NAMETAGS_HIDE_ENTITY_HEALTH.getBooleanValue()) {
             Component value = cir.getReturnValue();

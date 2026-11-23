@@ -9,7 +9,7 @@ import com.sweetljk.vitalassist.feature.HaoQiChongTian;
 
 @Mixin(LocalPlayer.class)
 public abstract class ClientPlayerEntityMixin {
-    @Inject(method = "sendPosition", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "sendPosition", at = @At("HEAD"), cancellable = true)
     private void vitalassist$sendPosition(CallbackInfo ci) {
         if (HaoQiChongTian.isFrozen()) ci.cancel();
     }

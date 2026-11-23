@@ -177,7 +177,7 @@ public final class CineDirector {
 
     private static void message(Minecraft mc, String text, CineConfig settings) {
         if (!settings.statusMessages() || mc.player == null) return;
-        mc.player.sendOverlayMessage(Component.literal("§6[VitalAssist] §f" + text));
+        mc.player.displayClientMessage(Component.literal("§6[VitalAssist] §f" + text), true);
     }
 
     /** 同一 tick、同一 partialTick 的相机与 FOV 采样结果恒等，且没有世界查询。 */

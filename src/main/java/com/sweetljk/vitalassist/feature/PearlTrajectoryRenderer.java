@@ -1,9 +1,10 @@
 package com.sweetljk.vitalassist.feature;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import fi.dy.masa.malilib.util.data.Color4f;
-import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
-import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
@@ -29,10 +30,12 @@ public final class PearlTrajectoryRenderer {
     }
 
     public static void init() {
-        LevelRenderEvents.AFTER_SOLID_FEATURES.register(PearlTrajectoryRenderer::render);
+        // 1.21.11 的 Fabric world 渲染事件把「线框/叠加」类绘制放在 BEFORE_DEBUG_RENDER，
+        // 与官方「在这里画线、overlay」的建议一致。
+        WorldRenderEvents.BEFORE_DEBUG_RENDER.register(PearlTrajectoryRenderer::render);
     }
 
-    private static void render(LevelRenderContext context) {
+    private static void render(WorldRenderContext context) {
         Minecraft client = Minecraft.getInstance();
         if (!Configs.PEARL_TRAJECTORY.getBooleanValue() || client.player == null || client.level == null) return;
         if (client.player.getMainHandItem().getItem() != Items.ENDER_PEARL && client.player.getOffhandItem().getItem() != Items.ENDER_PEARL) return;
@@ -99,39 +102,48 @@ public final class PearlTrajectoryRenderer {
         return client.level.getFluidState(pos).is(FluidTags.WATER);
     }
 
-    private static void renderTrajectory(LevelRenderContext context, Color4f color) {
-        VertexConsumer consumer = context.bufferSource().getBuffer(RenderTypes.lines());
-        Vec3 camera = context.levelState().cameraRenderState.pos;
+    private static void renderTrajectory(WorldRenderContext context, Color4f color) {
+        Minecraft client = Minecraft.getInstance();
+        Vec3 camera = client.gameRenderer.getMainCamera().position();
+        PoseStack matrices = context.matrices();
+        VertexConsumer consumer = context.consumers().getBuffer(RenderTypes.lines());
+
+        matrices.pushPose();
+        matrices.translate(-camera.x, -camera.y, -camera.z);
+        PoseStack.Pose pose = matrices.last();
+
         for (int i = 1; i < pointCount; i++) {
-            Vec3 last = POINTS[i - 1].subtract(camera);
-            Vec3 current = POINTS[i].subtract(camera);
-            line(consumer, last.x, last.y, last.z, current.x, current.y, current.z, color);
+            Vec3 last = POINTS[i - 1];
+            Vec3 current = POINTS[i];
+            line(consumer, pose, last.x, last.y, last.z, current.x, current.y, current.z, color);
         }
 
         if (hitPos != null) {
-            Vec3 hit = hitPos.subtract(camera);
-            renderHitAABB(consumer, hit, color);
+            renderHitAABB(consumer, pose, hitPos, color);
         }
+
+        matrices.popPose();
     }
 
-    private static void renderHitAABB(VertexConsumer consumer, Vec3 pos, Color4f color) {
+    private static void renderHitAABB(VertexConsumer consumer, PoseStack.Pose pose, Vec3 pos, Color4f color) {
         double size = 0.25D;
         AABB box = new AABB(pos.x - size, pos.y - size, pos.z - size, pos.x + size, pos.y + size, pos.z + size);
-        line(consumer, box.minX, box.minY, box.minZ, box.maxX, box.minY, box.minZ, color);
-        line(consumer, box.minX, box.maxY, box.minZ, box.maxX, box.maxY, box.minZ, color);
-        line(consumer, box.minX, box.minY, box.maxZ, box.maxX, box.minY, box.maxZ, color);
-        line(consumer, box.minX, box.maxY, box.maxZ, box.maxX, box.maxY, box.maxZ, color);
-        line(consumer, box.minX, box.minY, box.minZ, box.minX, box.maxY, box.minZ, color);
-        line(consumer, box.maxX, box.minY, box.minZ, box.maxX, box.maxY, box.minZ, color);
-        line(consumer, box.minX, box.minY, box.maxZ, box.minX, box.maxY, box.maxZ, color);
-        line(consumer, box.maxX, box.minY, box.maxZ, box.maxX, box.maxY, box.maxZ, color);
-        line(consumer, box.minX, box.minY, box.minZ, box.minX, box.minY, box.maxZ, color);
-        line(consumer, box.maxX, box.minY, box.minZ, box.maxX, box.minY, box.maxZ, color);
-        line(consumer, box.minX, box.maxY, box.minZ, box.minX, box.maxY, box.maxZ, color);
-        line(consumer, box.maxX, box.maxY, box.minZ, box.maxX, box.maxY, box.maxZ, color);
+        line(consumer, pose, box.minX, box.minY, box.minZ, box.maxX, box.minY, box.minZ, color);
+        line(consumer, pose, box.minX, box.maxY, box.minZ, box.maxX, box.maxY, box.minZ, color);
+        line(consumer, pose, box.minX, box.minY, box.maxZ, box.maxX, box.minY, box.maxZ, color);
+        line(consumer, pose, box.minX, box.maxY, box.maxZ, box.maxX, box.maxY, box.maxZ, color);
+        line(consumer, pose, box.minX, box.minY, box.minZ, box.minX, box.maxY, box.minZ, color);
+        line(consumer, pose, box.maxX, box.minY, box.minZ, box.maxX, box.maxY, box.minZ, color);
+        line(consumer, pose, box.minX, box.minY, box.maxZ, box.minX, box.maxY, box.maxZ, color);
+        line(consumer, pose, box.maxX, box.minY, box.maxZ, box.maxX, box.maxY, box.maxZ, color);
+        line(consumer, pose, box.minX, box.minY, box.minZ, box.minX, box.minY, box.maxZ, color);
+        line(consumer, pose, box.maxX, box.minY, box.minZ, box.maxX, box.minY, box.maxZ, color);
+        line(consumer, pose, box.minX, box.maxY, box.minZ, box.minX, box.maxY, box.maxZ, color);
+        line(consumer, pose, box.maxX, box.maxY, box.minZ, box.maxX, box.maxY, box.maxZ, color);
     }
 
-    private static void line(VertexConsumer consumer, double x1, double y1, double z1, double x2, double y2, double z2, Color4f color) {
+    private static void line(VertexConsumer consumer, PoseStack.Pose pose,
+                             double x1, double y1, double z1, double x2, double y2, double z2, Color4f color) {
         float normalX = (float) (x2 - x1);
         float normalY = (float) (y2 - y1);
         float normalZ = (float) (z2 - z1);
@@ -140,7 +152,7 @@ public final class PearlTrajectoryRenderer {
         normalX /= length;
         normalY /= length;
         normalZ /= length;
-        consumer.addVertex((float) x1, (float) y1, (float) z1).setColor(color.r, color.g, color.b, color.a).setNormal(normalX, normalY, normalZ).setLineWidth(1.0F);
-        consumer.addVertex((float) x2, (float) y2, (float) z2).setColor(color.r, color.g, color.b, color.a).setNormal(normalX, normalY, normalZ).setLineWidth(1.0F);
+        consumer.addVertex(pose, (float) x1, (float) y1, (float) z1).setColor(color.r, color.g, color.b, color.a).setNormal(normalX, normalY, normalZ).setLineWidth(1.0F);
+        consumer.addVertex(pose, (float) x2, (float) y2, (float) z2).setColor(color.r, color.g, color.b, color.a).setNormal(normalX, normalY, normalZ).setLineWidth(1.0F);
     }
 }

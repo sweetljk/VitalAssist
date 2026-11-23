@@ -17,7 +17,7 @@ public abstract class ClientPacketListenerMixin {
     @Unique
     private boolean vitalassist$llmProcessing;
 
-    @Inject(method = "sendChat", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "sendChat", at = @At("HEAD"), cancellable = true)
     private void vitalassist$sendChat(String message, CallbackInfo ci) {
         if (vitalassist$llmProcessing) return;
 

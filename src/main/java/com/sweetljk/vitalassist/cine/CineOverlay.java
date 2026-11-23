@@ -1,13 +1,13 @@
 package com.sweetljk.vitalassist.cine;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 /**
  * 电影视角的画面叠加：上下黑边、切镜转场、下方黑边歌词。
  *
- * <p>全部使用原版 {@link GuiGraphicsExtractor} 绘制，不依赖任何第三方渲染库。
+ * <p>全部使用原版 {@link GuiGraphics} 绘制，不依赖任何第三方渲染库。
  * 入口在 {@code Gui.extractRenderState} 的 TAIL —— 该注入点在 {@code options.hideGui}
  * 判断之后仍有执行路径，因此隐藏 HUD 时黑边与歌词照常显示。</p>
  */
@@ -18,7 +18,7 @@ public final class CineOverlay {
     private CineOverlay() {
     }
 
-    public static void render(GuiGraphicsExtractor graphics) {
+    public static void render(GuiGraphics graphics) {
         if (!CineDirector.isActive()) return;
         int width = graphics.guiWidth();
         int height = graphics.guiHeight();
@@ -44,7 +44,7 @@ public final class CineOverlay {
         }
     }
 
-    private static void drawTransition(GuiGraphicsExtractor graphics, int width, int height,
+    private static void drawTransition(GuiGraphics graphics, int width, int height,
                                        CineDirector.TransitionFrame frame) {
         double eased = CineShots.smootherstep(frame.progress());
         double coverage = frame.covering() ? eased : 1d - eased;
@@ -65,7 +65,7 @@ public final class CineOverlay {
         }
     }
 
-    private static void fillAlpha(GuiGraphicsExtractor graphics, int width, int height,
+    private static void fillAlpha(GuiGraphics graphics, int width, int height,
                                   double coverage, int rgb) {
         int alpha = (int) Math.round(clamp01(coverage) * 255d);
         if (alpha <= 0) return;
@@ -73,7 +73,7 @@ public final class CineOverlay {
     }
 
     /** 光圈 iris：用横向分带逼近圆形遮罩，带数固定以免逐像素开销。 */
-    private static void drawIris(GuiGraphicsExtractor graphics, int width, int height, double coverage) {
+    private static void drawIris(GuiGraphics graphics, int width, int height, double coverage) {
         if (coverage <= 0d) return;
         if (coverage >= 1d) {
             graphics.fill(0, 0, width, height, BLACK);
@@ -101,7 +101,7 @@ public final class CineOverlay {
         }
     }
 
-    private static void drawLyrics(GuiGraphicsExtractor graphics, int width, int height, int barHeight) {
+    private static void drawLyrics(GuiGraphics graphics, int width, int height, int barHeight) {
         Minecraft client = Minecraft.getInstance();
         if (!CineDirector.musicPlaying()) return;
         CineLyrics.request(CineDirector.musicSongId());
@@ -117,10 +117,10 @@ public final class CineOverlay {
         int centerX = width / 2;
 
         if (!line.text().isEmpty()) {
-            graphics.centeredText(client.font, Component.literal(line.text()), centerX, top, 0xFFFFFFFF);
+            graphics.drawCenteredString(client.font, Component.literal(line.text()), centerX, top, 0xFFFFFFFF);
         }
         if (hasTranslation) {
-            graphics.centeredText(client.font, Component.literal(line.translation()), centerX,
+            graphics.drawCenteredString(client.font, Component.literal(line.translation()), centerX,
                     top + lineHeight, 0xFFBBBBBB);
         }
     }

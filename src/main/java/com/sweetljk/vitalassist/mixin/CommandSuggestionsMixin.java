@@ -16,9 +16,9 @@ import java.util.List;
 
 @Mixin(CommandSuggestions.class)
 public abstract class CommandSuggestionsMixin {
-    @Shadow(remap = false) @Final private EditBox input;
+    @Shadow @Final private EditBox input;
 
-    @Inject(method = "sortSuggestions", at = @At("RETURN"), cancellable = true, remap = false)
+    @Inject(method = "sortSuggestions", at = @At("RETURN"), cancellable = true)
     private void vitalassist$sortSuggestions(Suggestions suggestions, CallbackInfoReturnable<List<Suggestion>> cir) {
         cir.setReturnValue(CommandCompletionFilter.filter(input.getValue(), input.getCursorPosition(), cir.getReturnValue()));
     }

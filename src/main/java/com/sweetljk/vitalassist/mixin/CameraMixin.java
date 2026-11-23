@@ -1,12 +1,12 @@
 package com.sweetljk.vitalassist.mixin;
 
 import net.minecraft.client.Camera;
-import net.minecraft.client.DeltaTracker;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.sweetljk.vitalassist.cine.CineCameraRotation;
 import com.sweetljk.vitalassist.cine.CineDirector;
@@ -25,11 +25,15 @@ public abstract class CameraMixin implements CineCameraRotation {
         return vitalassist$cineRoll == null ? Float.NaN : vitalassist$cineRoll;
     }
 
-    @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;alignWithEntity(F)V", shift = At.Shift.AFTER, remap = false), remap = false)
-    private void vitalassist$afterAlignWithEntity(DeltaTracker tickCounter, CallbackInfo ci) {
-        Camera camera = (Camera) (Object) this;
+    /**
+     * 1.21.11 的相机同步入口是 {@code Camera.setup(Level, Entity, boolean, boolean, float)}，
+     * 它内部完成位置/朝向计算。在 TAIL 覆盖绝对机位即可接管本帧相机。
+     */
+    @Inject(method = "setup", at = @At("TAIL"))
+    private void vitalassist$afterSetup(Level level, Entity entity, boolean detached, boolean thirdPersonReverse,
+                                        float partialTick, CallbackInfo ci) {
         CameraAccessor accessor = (CameraAccessor) this;
-        float tickDelta = camera.getCameraEntityPartialTicks(tickCounter);
+        float tickDelta = partialTick;
 
         // 电影视角优先级最高：覆盖本帧绝对机位，并顺带写入 roll。
         if (CineDirector.isActive()) {
@@ -69,10 +73,5 @@ public abstract class CameraMixin implements CineCameraRotation {
                 Freecam.getYaw(tickDelta),
                 Freecam.getPitch(tickDelta)
         );
-    }
-
-    @ModifyVariable(method = "getMaxZoom", at = @At("HEAD"), ordinal = 0, argsOnly = true, remap = false)
-    private float vitalassist$modifyGetMaxZoom(float desiredCameraDistance) {
-        return Freecam.isActive() || HaoQiChongTian.isFrozen() ? 0.0F : desiredCameraDistance;
     }
 }
