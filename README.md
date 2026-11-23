@@ -4,12 +4,12 @@
 
 # VitalAssist
 
-**适用于 Fabric 26.1.2 的客户端生存辅助 Mod**
+**适用于 Fabric 1.21.11 / 26.1.2 / 26.2 / 26.3 的客户端生存辅助 Mod**
 
 自动工具 / 自动进食 / 自动图腾 / 自由视角 / 珍珠抛物线 / 电影视角 / 聊天翻译 / 合乎周礼
 
-[![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62B47A.svg)](#)
-[![Fabric Loader](https://img.shields.io/badge/Fabric%20Loader-%3E%3D0.19.1-DBB69C.svg)](#)
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11%20%7C%2026.1.2%20%7C%2026.2%20%7C%2026.3-62B47A.svg)](#)
+[![Fabric Loader](https://img.shields.io/badge/Fabric%20Loader-0.19.1%2B-DBB69C.svg)](#)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-25-orange.svg)](#)
 
@@ -33,10 +33,23 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 
 ## 下载
 
-前往 [Releases](https://github.com/sweetljk/VitalAssist/releases) 下载最新版本：
+前往 [Releases](https://github.com/sweetljk/VitalAssist/releases) 下载与你游戏版本对应的 jar：
 
-- **最新版本**：`VitalAssist-1.3.jar`
-- 直接下载：<https://github.com/sweetljk/VitalAssist/releases/download/v1.3/VitalAssist-1.3.jar>
+| 游戏版本 | 源码分支 | Release | 文件名 |
+|---|---|---|---|
+| **1.21.11** | [`1.21.11`](https://github.com/sweetljk/VitalAssist/tree/1.21.11) | [v1.3-1.21.11](https://github.com/sweetljk/VitalAssist/releases/tag/v1.3-1.21.11) | `VitalAssist-1.3+1.21.11.jar` |
+| **26.1.2** | [`main`](https://github.com/sweetljk/VitalAssist/tree/main) | [v1.3](https://github.com/sweetljk/VitalAssist/releases/tag/v1.3) | `VitalAssist-1.3.jar` |
+| **26.2** | [`26.2`](https://github.com/sweetljk/VitalAssist/tree/26.2) | [v1.3-26.2](https://github.com/sweetljk/VitalAssist/releases/tag/v1.3-26.2) | `VitalAssist-1.3+26.2.jar` |
+| **26.3** | [`26.3`](https://github.com/sweetljk/VitalAssist/tree/26.3) | [v1.3-26.3](https://github.com/sweetljk/VitalAssist/releases/tag/v1.3-26.3) | `VitalAssist-1.3+26.3.jar` |
+
+直链：
+
+- 1.21.11：<https://github.com/sweetljk/VitalAssist/releases/download/v1.3-1.21.11/VitalAssist-1.3+1.21.11.jar>
+- 26.1.2：<https://github.com/sweetljk/VitalAssist/releases/download/v1.3/VitalAssist-1.3.jar>
+- 26.2：<https://github.com/sweetljk/VitalAssist/releases/download/v1.3-26.2/VitalAssist-1.3+26.2.jar>
+- 26.3：<https://github.com/sweetljk/VitalAssist/releases/download/v1.3-26.3/VitalAssist-1.3+26.3.jar>
+
+> jar 不能跨版本通用，请严格按游戏版本选择。
 
 ## 功能
 
@@ -121,8 +134,10 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 
 ## 安装
 
-1. 安装 **Fabric Loader** `>= 0.19.1`（Minecraft `26.1.2`）
-2. 将 `VitalAssist-1.3.jar` 放入 `.minecraft/mods`
+1. 按上表选好与游戏版本对应的 jar，并安装该版本要求的 **Fabric Loader**：
+   - `1.21.11` / `26.2` / `26.3`：`>= 0.20.1`
+   - `26.1.2`：`>= 0.19.1`
+2. 将对应版本的 jar 放入 `.minecraft/mods`
 3. 安装依赖 Mod（见下表）
 4. 启动游戏，按 `Z + L` 打开配置界面
 
@@ -130,9 +145,9 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 
 | Mod | 是否必需 | 说明 |
 |---|---|---|
-| [Fabric API](https://modrinth.com/mod/fabric-api) | 必需 | `0.153.0+26.1.2` 或更新 |
+| [Fabric API](https://modrinth.com/mod/fabric-api) | 必需 | 随版本：`1.21.11` → `0.141.6+1.21.11`，`26.1.2` → `0.153.0+26.1.2`，`26.2` → `0.161.0+26.2`，`26.3` → `0.167.0+26.3` |
 | [malilib](https://modrinth.com/mod/malilib) | 必需 | 提供配置界面 |
-| [Mod Menu](https://modrinth.com/mod/modmenu) | 推荐 | 便于管理配置 |
+| [Mod Menu](https://modrinth.com/mod/modmenu) | 推荐 | 便于管理配置（`1.21.11` → `17.0.1`，`26.1.2` → `18.0.0-beta.1`，`26.2` → `20.0.3`，`26.3` → `21.0.1`） |
 | Quick Shulker | 可选 | 潜影盒补货功能需要 |
 | [DangoMusic](https://modrinth.com/mod/dango-music) | 可选 | 电影视角的音乐节拍与歌词来源；未安装时手动进入仍可用，但不会自动触发 |
 
@@ -151,12 +166,22 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 
 ## 从源码构建
 
+每个游戏版本一个分支，先切到对应分支再构建：
+
+| 游戏版本 | 分支 |
+|---|---|
+| 1.21.11 | `1.21.11` |
+| 26.1.2 | `main` |
+| 26.2 | `26.2` |
+| 26.3 | `26.3` |
+
 ```bash
+git checkout main        # 换成你要的版本分支
 # 需要 JDK 25
 ./gradlew build
 ```
 
-产物位于 `build/libs/VitalAssist-1.3.jar`。
+产物位于 `build/libs/VitalAssist-1.3.jar`（非 26.1.2 分支的产物名会带 `+游戏版本`）。
 
 ## 来源与致谢
 
