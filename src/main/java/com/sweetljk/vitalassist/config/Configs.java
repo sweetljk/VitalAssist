@@ -61,6 +61,12 @@ public class Configs implements IConfigHandler {
     public static final ConfigString ZHOU_LI_API_KEY = new ConfigString("合乎周礼 API Key", "", "DeepSeek API Key");
     public static final ConfigString ZHOU_LI_MODEL = new ConfigString("合乎周礼 Model", "deepseek-v4-pro", "DeepSeek 模型名称");
 
+    public static final ConfigBooleanHotkeyed CHAT_TRANSLATE = new ConfigBooleanHotkeyed("语言翻译", false, "", "启用后发送的聊天会由 LLM 翻译成目标语言再发送；与合乎周礼同时开启时仅翻译生效");
+    public static final ConfigString CHAT_TRANSLATE_TARGET = new ConfigString("语言翻译 目标语言", "英语", "翻译后的目标语言，例如：英语、汉语、日语。目标为英语时中文会译成英语，目标为汉语时英文会译成汉语");
+    public static final ConfigString CHAT_TRANSLATE_API_BASE = new ConfigString("语言翻译 API BaseURL", "https://api.deepseek.com", "语言翻译使用的 OpenAI 兼容 API 地址，与合乎周礼相互独立");
+    public static final ConfigString CHAT_TRANSLATE_API_KEY = new ConfigString("语言翻译 API Key", "", "语言翻译使用的 API Key，与合乎周礼相互独立");
+    public static final ConfigString CHAT_TRANSLATE_MODEL = new ConfigString("语言翻译 Model", "deepseek-v4-pro", "语言翻译使用的模型名称");
+
     public static final ImmutableList<IConfigBase> ALL_CONFIGS = createAllConfigs();
     public static final ImmutableList<IHotkeyTogglable> SWITCH_KEY = ImmutableList.of(
             AUTO_TOOL,
@@ -71,7 +77,8 @@ public class Configs implements IConfigHandler {
             HAO_QI_CHONG_TIAN,
             NO_SLOW,
             BETTER_CHAT,
-            ZHOU_LI
+            ZHOU_LI,
+            CHAT_TRANSLATE
     );
     public static final ImmutableList<ConfigHotkey> KEY_LIST = ImmutableList.of(OPEN_CONFIG, SILENT_FIREWORK);
 
@@ -112,6 +119,11 @@ public class Configs implements IConfigHandler {
         list.add(ZHOU_LI_API_BASE);
         list.add(ZHOU_LI_API_KEY);
         list.add(ZHOU_LI_MODEL);
+        list.add(CHAT_TRANSLATE);
+        list.add(CHAT_TRANSLATE_TARGET);
+        list.add(CHAT_TRANSLATE_API_BASE);
+        list.add(CHAT_TRANSLATE_API_KEY);
+        list.add(CHAT_TRANSLATE_MODEL);
         return ImmutableList.copyOf(list);
     }
 

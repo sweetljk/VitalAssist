@@ -3,7 +3,7 @@
   "id": "vitalassist",
   "version": "${version}",
   "name": "VitalAssist",
-  "description": "A configurable client-side survival utility mod for Fabric, featuring automation, warnings, rendering helpers, chat tools, and DeepSeek-powered ZhouLi chat rewriting.",
+  "description": "A configurable client-side survival utility mod for Fabric, featuring automation, warnings, rendering helpers, chat tools, DeepSeek-powered ZhouLi chat rewriting, and chat translation.",
   "authors": [
     "sweetljk"
   ],

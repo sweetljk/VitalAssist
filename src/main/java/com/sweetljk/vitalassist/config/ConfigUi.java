@@ -2,23 +2,51 @@ package com.sweetljk.vitalassist.config;
 
 import com.google.common.collect.ImmutableList;
 import com.sweetljk.vitalassist.client.VitalAssistClient;
+import com.sweetljk.vitalassist.feature.ChatTranslator;
 import com.sweetljk.vitalassist.feature.ZhouLi;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.button.IButtonActionListener;
+import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.util.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class ConfigUi extends GuiConfigsBase {
     private static Tab tab = Tab.ALL;
-    private static boolean connectionTesting;
-    private static String connectionTestStatus = "测试连接";
+
+    private static boolean zhouLiTesting;
+    private static String zhouLiTestStatus = "测试连接";
+    private static boolean translationTesting;
+    private static String translationTestStatus = "测试连接";
+
+    private static final ConfigActionButton ZHOU_LI_TEST = new ConfigActionButton(
+            "合乎周礼 Model 连接检测",
+            "连接检测",
+            "测试连接",
+            "使用上方合乎周礼的 API BaseURL、Key 与 Model 发送最小测试请求",
+            () -> zhouLiTestStatus,
+            () -> !zhouLiTesting,
+            () -> testConnection(ApiKind.ZHOU_LI),
+            "点击测试当前合乎周礼 API 配置"
+    );
+
+    private static final ConfigActionButton TRANSLATION_TEST = new ConfigActionButton(
+            "语言翻译 Model 连接检测",
+            "连接检测",
+            "测试连接",
+            "使用上方语言翻译的 API BaseURL、Key 与 Model 发送最小测试请求",
+            () -> translationTestStatus,
+            () -> !translationTesting,
+            () -> testConnection(ApiKind.TRANSLATION),
+            "点击测试当前语言翻译 API 配置"
+    );
 
     private static final ImmutableList<IConfigBase> GENERAL_CONFIGS = ImmutableList.of(
             Configs.OPEN_CONFIG,
@@ -64,8 +92,17 @@ public class ConfigUi extends GuiConfigsBase {
             Configs.ZHOU_LI,
             Configs.ZHOU_LI_API_BASE,
             Configs.ZHOU_LI_API_KEY,
-            Configs.ZHOU_LI_MODEL
+            Configs.ZHOU_LI_MODEL,
+            ZHOU_LI_TEST,
+            Configs.CHAT_TRANSLATE,
+            Configs.CHAT_TRANSLATE_TARGET,
+            Configs.CHAT_TRANSLATE_API_BASE,
+            Configs.CHAT_TRANSLATE_API_KEY,
+            Configs.CHAT_TRANSLATE_MODEL,
+            TRANSLATION_TEST
     );
+
+    private static final ImmutableList<IConfigBase> ALL_VIEW_CONFIGS = createAllViewConfigs();
 
     public ConfigUi() {
         super(10, 50, VitalAssistClient.MOD_NAME, null, "VitalAssist 配置界面");
@@ -81,11 +118,22 @@ public class ConfigUi extends GuiConfigsBase {
         for (Tab tab : Tab.values()) {
             x += this.createButton(x, y, -1, tab);
         }
+    }
 
-        ButtonGeneric testButton = new ButtonGeneric(x + 4, y, 96, 20, connectionTestStatus);
-        testButton.setEnabled(!connectionTesting);
-        testButton.setHoverStrings("使用当前合乎周礼 API 地址、Key 和模型发送测试请求");
-        this.addButton(testButton, (button, mouseButton) -> testConnection());
+    @Override
+    protected WidgetListConfigOptions createListWidget(int x, int y) {
+        return new ActionButtonConfigList(x, y, this.getBrowserWidth(), this.getBrowserHeight(),
+                this.getConfigWidth(), 0F, this.useKeybindSearch(), this);
+    }
+
+    private static ImmutableList<IConfigBase> createAllViewConfigs() {
+        List<IConfigBase> configs = new ArrayList<>();
+        for (IConfigBase config : Configs.ALL_CONFIGS) {
+            configs.add(config);
+            if (config == Configs.ZHOU_LI_MODEL) configs.add(ZHOU_LI_TEST);
+            if (config == Configs.CHAT_TRANSLATE_MODEL) configs.add(TRANSLATION_TEST);
+        }
+        return ImmutableList.copyOf(configs);
     }
 
     private int createButton(int x, int y, int width, Tab tab) {
@@ -95,37 +143,63 @@ public class ConfigUi extends GuiConfigsBase {
         return button.getWidth() + 2;
     }
 
-    private void testConnection() {
-        if (connectionTesting) return;
-
+    private static void testConnection(ApiKind kind) {
         Minecraft client = Minecraft.getInstance();
-        connectionTesting = true;
-        connectionTestStatus = "测试中...";
-        this.initGui();
 
-        ZhouLi.testConnection().thenAccept(result -> client.execute(() -> {
-            connectionTesting = false;
-            connectionTestStatus = result.success() ? "连接成功" : "连接失败";
+        if (kind == ApiKind.ZHOU_LI) {
+            if (zhouLiTesting) return;
+            zhouLiTesting = true;
+            zhouLiTestStatus = "测试中...";
 
-            if (client.player != null) {
-                String color = result.success() ? "§a" : "§c";
-                client.player.sendSystemMessage(Component.literal("§6[VitalAssist] " + color + result.message()));
-            }
+            ZhouLi.testConnection().thenAccept(result -> client.execute(() -> {
+                zhouLiTesting = false;
+                zhouLiTestStatus = result.success() ? "连接成功" : "连接失败";
+                showTestResult(kind, result.success(), result.message());
+            }));
+            return;
+        }
 
-            if (client.screen == this) this.initGui();
+        if (translationTesting) return;
+        translationTesting = true;
+        translationTestStatus = "测试中...";
+
+        ChatTranslator.testConnection().thenAccept(result -> client.execute(() -> {
+            translationTesting = false;
+            translationTestStatus = result.success() ? "连接成功" : "连接失败";
+            showTestResult(kind, result.success(), result.message());
         }));
+    }
+
+    private static void showTestResult(ApiKind kind, boolean success, String message) {
+        Minecraft client = Minecraft.getInstance();
+        if (client.player != null) {
+            String color = success ? "§a" : "§c";
+            client.player.sendSystemMessage(Component.literal(
+                    "§6[VitalAssist] " + kind.label + "：" + color + message));
+        }
     }
 
     @Override
     public List<ConfigOptionWrapper> getConfigs() {
         List<? extends IConfigBase> configs = switch (tab) {
-            case ALL -> Configs.ALL_CONFIGS;
+            case ALL -> ALL_VIEW_CONFIGS;
             case GENERAL -> GENERAL_CONFIGS;
             case ASSIST -> ASSIST_CONFIGS;
             case VISUAL -> VISUAL_CONFIGS;
             case CHAT -> CHAT_CONFIGS;
         };
         return ConfigOptionWrapper.createFor(configs);
+    }
+
+    private enum ApiKind {
+        ZHOU_LI("合乎周礼"),
+        TRANSLATION("语言翻译");
+
+        private final String label;
+
+        ApiKind(String label) {
+            this.label = label;
+        }
     }
 
     private static class ButtonListener implements IButtonActionListener {

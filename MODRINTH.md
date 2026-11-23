@@ -17,6 +17,8 @@ A client-side survival utility mod for Fabric 26.1.2. Provides various quality-o
 | **Firework Warning** | On-screen warning when fireworks are below threshold |
 | **Totem Warning** | On-screen warning when totems are below threshold |
 | **Better Chat** | Chat regex filtering and folding |
+| **ZhouLi Chat** | Rewrites outgoing chat through DeepSeek using a classical Chinese tone |
+| **Chat Translation** | Translates outgoing chat through DeepSeek into a configurable target language (English by default) |
 | **Command Completion Filter** | Block specified commands from tab completion |
 | **Hide Entity Health** | Blocks FZ datapack health display under entity nametags |
 | **Shulker Restock** | Auto-restock pearls/fireworks from shulkers (requires Quick Shulker) |
@@ -54,5 +56,6 @@ Press `Z + L` (configurable) to open the settings.
 ## Notes
 
 - Client-side only — no server installation required
-- Some features (Ghost Hand, ESP, etc.) may be disallowed on certain servers; obey server rules
+- Some automation features may be disallowed on certain servers; obey server rules
 - Shulker Restock requires the Quick Shulker mod to be installed
+- All features are disabled by default and must be enabled in the config screen
