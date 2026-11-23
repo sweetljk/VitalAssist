@@ -13,7 +13,7 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-25-orange.svg)](#)
 
-[下载](#下载) · [功能](#功能) · [安装](#安装) · [配置](#配置) · [从源码构建](#从源码构建)
+[下载](#下载) · [功能](#功能) · [安装](#安装) · [配置](#配置) · [从源码构建](#从源码构建) · [来源](#来源与致谢)
 
 </div>
 
@@ -128,6 +128,13 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 ```
 
 产物位于 `build/libs/VitalAssist-1.2.jar`。
+
+## 来源与致谢
+
+本 Mod 的**部分功能移植自 [AS-PLUS](https://github.com/HelloMoon-1/AS-PLUS)**，在此向原作者表示感谢。
+
+- 原项目地址：<https://github.com/HelloMoon-1/AS-PLUS>
+- 本项目在其基础上做了功能裁剪、配置界面重构（malilib 分类 Tab）、默认值调整，并新增了语言翻译与独立的 DeepSeek API 连接检测等特性。
 
 ## 许可证
 
