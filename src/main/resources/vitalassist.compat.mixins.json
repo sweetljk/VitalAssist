@@ -1,0 +1,14 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.sweetljk.vitalassist.mixin.compat",
+  "compatibilityLevel": "JAVA_25",
+  "plugin": "com.sweetljk.vitalassist.mixin.compat.CompatMixinPlugin",
+  "client": [
+    "MiniHudHudMixin",
+    "JadeOverlayMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

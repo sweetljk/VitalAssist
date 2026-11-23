@@ -27,7 +27,8 @@
     ]
   },
   "mixins": [
-    "vitalassist.mixins.json"
+    "vitalassist.mixins.json",
+    "vitalassist.compat.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader_min_version}",

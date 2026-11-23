@@ -84,6 +84,16 @@ public final class CineDirector {
         return frame.active();
     }
 
+    /**
+     * 电影视角隐藏 HUD 时，也要屏蔽那些不读原版 HUD 状态、自己直接绘制的外部 HUD
+     * （MiniHUD 的左上角信息行、Jade 的方块提示等）。
+     */
+    public static boolean shouldHideExternalHud() {
+        if (!isActive()) return false;
+        Minecraft mc = Minecraft.getInstance();
+        return CineConfig.snapshot().hideHud() || mc.gui.hud.isHidden();
+    }
+
     public static boolean manualActive() {
         return SESSION.manual();
     }
