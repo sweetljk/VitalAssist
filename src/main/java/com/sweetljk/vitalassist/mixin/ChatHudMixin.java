@@ -25,7 +25,7 @@ public abstract class ChatHudMixin {
 
     @Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/multiplayer/chat/GuiMessageSource;Lnet/minecraft/client/multiplayer/chat/GuiMessageTag;)V", at = @At("HEAD"), cancellable = true, remap = false)
     private void vitalassist$addMessage(Component message, MessageSignature signature, GuiMessageSource source, GuiMessageTag indicator, CallbackInfo ci) {
-        if (BetterChat.handleMessage(allMessages, this::refreshTrimmedMessages, message, signature, source, indicator, minecraft.gui.getGuiTicks())) ci.cancel();
+        if (BetterChat.handleMessage(allMessages, this::refreshTrimmedMessages, message, signature, source, indicator, minecraft.gui.hud.getGuiTicks())) ci.cancel();
     }
 
     @Inject(method = "clearMessages", at = @At("HEAD"), remap = false)

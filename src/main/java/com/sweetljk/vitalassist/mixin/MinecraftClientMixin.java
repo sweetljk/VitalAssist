@@ -1,10 +1,7 @@
 package com.sweetljk.vitalassist.mixin;
 
 import com.sweetljk.vitalassist.feature.Freecam;
-import com.sweetljk.vitalassist.feature.ShulkerRestock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.ShulkerBoxScreen;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
@@ -17,11 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Minecraft.class)
 public abstract class MinecraftClientMixin {
-    @Inject(method = "setScreen", at = @At("HEAD"), cancellable = true, remap = false)
-    private void vitalassist$setScreen(Screen screen, CallbackInfo ci) {
-        if (ShulkerRestock.shouldHideScreen() && screen instanceof ShulkerBoxScreen) ci.cancel();
-    }
-
+    /** 自由视角时的准星射线：26.2 仍由 {@code Minecraft.pick(float)} 计算。 */
     @Inject(method = "pick", at = @At("HEAD"), cancellable = true, remap = false)
     private void vitalassist$pick(float tickProgress, CallbackInfo ci) {
         Minecraft client = (Minecraft) (Object) this;

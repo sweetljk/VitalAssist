@@ -19,7 +19,7 @@ public final class AutoTool {
     }
 
     public static void tick(Minecraft client) {
-        if (!Configs.AUTO_TOOL.getBooleanValue() || client.player == null || client.level == null || client.screen != null) {
+        if (!Configs.AUTO_TOOL.getBooleanValue() || client.player == null || client.level == null || client.gui.screen() != null) {
             reset();
             return;
         }
@@ -36,7 +36,7 @@ public final class AutoTool {
 
     public static void beforeBlockAttack(BlockPos pos) {
         Minecraft client = Minecraft.getInstance();
-        if (!Configs.AUTO_TOOL.getBooleanValue() || client.player == null || client.level == null || client.screen != null) return;
+        if (!Configs.AUTO_TOOL.getBooleanValue() || client.player == null || client.level == null || client.gui.screen() != null) return;
 
         int currentSlot = InventoryHelper.getSelectedHotbarSlot(client);
         if (previousSlot == -1) previousSlot = currentSlot;

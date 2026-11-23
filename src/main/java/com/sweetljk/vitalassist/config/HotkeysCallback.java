@@ -9,7 +9,7 @@ public class HotkeysCallback implements IHotkeyCallback {
     @Override
     public boolean onKeyAction(KeyAction action, IKeybind key) {
         if (key == Configs.OPEN_CONFIG.getKeybind()) {
-            Minecraft.getInstance().setScreen(new ConfigUi());
+            Minecraft.getInstance().gui.setScreen(new ConfigUi());
             return true;
         }
         if (key == Configs.CINE_MANUAL.getKeybind()) {

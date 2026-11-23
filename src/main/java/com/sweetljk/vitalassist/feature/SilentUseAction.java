@@ -16,7 +16,7 @@ public final class SilentUseAction {
         if (pendingItem == null) return;
 
         Minecraft client = Minecraft.getInstance();
-        if (client.player == null || client.gameMode == null || client.screen != null) return;
+        if (client.player == null || client.gameMode == null || client.gui.screen() != null) return;
 
         if (InventoryHelper.findItemInInventory(client, pendingItem) != -1) {
             Item item = pendingItem;
@@ -34,7 +34,7 @@ public final class SilentUseAction {
 
     private static void useItem(Item item) {
         Minecraft client = Minecraft.getInstance();
-        if (client.player == null || client.gameMode == null || client.screen != null) return;
+        if (client.player == null || client.gameMode == null || client.gui.screen() != null) return;
 
         int itemSlot = InventoryHelper.findItemInInventory(client, item);
         if (itemSlot == -1) {

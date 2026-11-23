@@ -18,7 +18,7 @@ public final class SilentUseHotkeys {
         }
 
         SilentUseAction.tick();
-        if (client.screen != null) return;
+        if (client.gui.screen() != null) return;
 
         boolean fireworkPressed = isPressed(client, Configs.SILENT_FIREWORK.getKeybind());
 
