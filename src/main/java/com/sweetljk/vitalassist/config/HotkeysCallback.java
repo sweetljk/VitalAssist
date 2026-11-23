@@ -12,11 +12,16 @@ public class HotkeysCallback implements IHotkeyCallback {
             Minecraft.getInstance().setScreen(new ConfigUi());
             return true;
         }
+        if (key == Configs.CINE_MANUAL.getKeybind()) {
+            com.sweetljk.vitalassist.cine.CineDirector.requestManualToggle();
+            return true;
+        }
         return false;
     }
 
     public static void init() {
         HotkeysCallback callback = new HotkeysCallback();
         Configs.OPEN_CONFIG.getKeybind().setCallback(callback);
+        Configs.CINE_MANUAL.getKeybind().setCallback(callback);
     }
 }

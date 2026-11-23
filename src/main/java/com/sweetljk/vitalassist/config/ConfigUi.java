@@ -102,6 +102,32 @@ public class ConfigUi extends GuiConfigsBase {
             TRANSLATION_TEST
     );
 
+    private static final ImmutableList<IConfigBase> CINE_CONFIGS = ImmutableList.of(
+            Configs.CINE_ENABLED,
+            Configs.CINE_IDLE_SECONDS,
+            Configs.CINE_MANUAL,
+            Configs.CINE_BEAT_SYNC,
+            Configs.CINE_SHOT_BEATS,
+            Configs.CINE_MIN_SHOT_SECONDS,
+            Configs.CINE_SPEED,
+            Configs.CINE_ENVIRONMENT_PERCENT,
+            Configs.CINE_FOV_PUNCH,
+            Configs.CINE_HANDHELD,
+            Configs.CINE_HIDE_HUD,
+            Configs.CINE_BARS,
+            Configs.CINE_BAR_PERCENT,
+            Configs.CINE_TRANSITION,
+            Configs.CINE_TRANSITION_EFFECT,
+            Configs.CINE_TRANSITION_SECONDS,
+            Configs.CINE_MOB_FOCUS,
+            Configs.CINE_MOB_RANGE,
+            Configs.CINE_TRACKING_SOFTNESS,
+            Configs.CINE_EXCLUDE_HOSTILE,
+            Configs.CINE_EXCLUDE_BATS,
+            Configs.CINE_LYRICS,
+            Configs.CINE_STATUS_MESSAGES
+    );
+
     private static final ImmutableList<IConfigBase> ALL_VIEW_CONFIGS = createAllViewConfigs();
 
     public ConfigUi() {
@@ -187,6 +213,7 @@ public class ConfigUi extends GuiConfigsBase {
             case ASSIST -> ASSIST_CONFIGS;
             case VISUAL -> VISUAL_CONFIGS;
             case CHAT -> CHAT_CONFIGS;
+            case CINE -> CINE_CONFIGS;
         };
         return ConfigOptionWrapper.createFor(configs);
     }
@@ -225,7 +252,8 @@ public class ConfigUi extends GuiConfigsBase {
         GENERAL("通用"),
         ASSIST("辅助"),
         VISUAL("视觉"),
-        CHAT("聊天");
+        CHAT("聊天"),
+        CINE("电影视角");
 
         private final String translation;
 

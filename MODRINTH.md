@@ -19,6 +19,7 @@ A client-side survival utility mod for Fabric 26.1.2. Provides various quality-o
 | **Better Chat** | Chat regex filtering and folding |
 | **ZhouLi Chat** | Rewrites outgoing chat through DeepSeek using a classical Chinese tone |
 | **Chat Translation** | Translates outgoing chat through DeepSeek into a configurable target language (English by default) |
+| **Cinematic Camera** | Idle- or hotkey-triggered beat-synced camera shots with letterbox bars, transitions, wildlife focus and lyrics while music plays (needs DangoMusic) |
 | **Command Completion Filter** | Block specified commands from tab completion |
 | **Hide Entity Health** | Blocks FZ datapack health display under entity nametags |
 | **Shulker Restock** | Auto-restock pearls/fireworks from shulkers (requires Quick Shulker) |
@@ -34,6 +35,7 @@ Released under the MIT License. See `LICENSE`.
 - **malilib** (required — provides config UI)
 - **Mod Menu** (recommended for easy config management)
 - **Quick Shulker** (optional — needed for shulker restock)
+- **DangoMusic** (optional — supplies the music playback, beat grid and lyrics used by the Cinematic Camera; auto-entry needs it playing, and lyrics are fetched from its NetEase lyric API)
 
 ## Installation
 
@@ -45,7 +47,7 @@ Released under the MIT License. See `LICENSE`.
 
 ## Configuration
 
-All features are managed through the malilib config screen:
+All features are managed through the malilib config screen, grouped into tabs: All / General / Assist / Visual / Chat / Cinematic.
 - Toggle switches and hotkey bindings
 - Numeric sliders
 - Color pickers
@@ -53,9 +55,17 @@ All features are managed through the malilib config screen:
 
 Press `Z + L` (configurable) to open the settings.
 
+### Cinematic Camera
+
+- Enable the main switch, play music with DangoMusic, and stop touching the keyboard/mouse for the configured idle time (10 s by default) to enter automatically, or bind the manual hotkey to enter instantly.
+- Requires **DangoMusic**: it provides the playback state, beat grid (`beatSnapshot`) and lyrics (`LyricsProvider.neteaseLyricById`). Without it, only manual entry works, beats fall back to a fixed tempo and the lyric area stays empty.
+- Any keyboard/mouse input returns the camera immediately; opening a screen, taking damage, stopping the music or disabling the switch eases the camera back to the player.
+- The Cinematic Camera and Freecam / HaoQiChongTian all drive the same camera, so entering disables those two.
+
 ## Notes
 
 - Client-side only — no server installation required
 - Some automation features may be disallowed on certain servers; obey server rules
 - Shulker Restock requires the Quick Shulker mod to be installed
+- Cinematic Camera lyrics and beat sync require the DangoMusic mod; lyrics also need network access
 - All features are disabled by default and must be enabled in the config screen

@@ -42,6 +42,7 @@ public class VitalAssistClient implements ClientModInitializer {
             if (ticks % Math.max(1, Configs.AUTO_TOTEM_INTERVAL.getIntegerValue()) == 0) {
                 AutoTotem.tick(client);
             }
+            com.sweetljk.vitalassist.cine.CineDirector.onClientTick(client);
         });
 
         LOGGER.info("VitalAssist client loaded");

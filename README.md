@@ -6,7 +6,7 @@
 
 **适用于 Fabric 26.1.2 的客户端生存辅助 Mod**
 
-自动工具 / 自动进食 / 自动图腾 / 自由视角 / 珍珠抛物线 / 聊天翻译 / 合乎周礼
+自动工具 / 自动进食 / 自动图腾 / 自由视角 / 珍珠抛物线 / 电影视角 / 聊天翻译 / 合乎周礼
 
 [![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62B47A.svg)](#)
 [![Fabric Loader](https://img.shields.io/badge/Fabric%20Loader-%3E%3D0.19.1-DBB69C.svg)](#)
@@ -27,6 +27,7 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 - 配置界面按 **全部 / 通用 / 辅助 / 视觉 / 聊天** 分类
 - 支持快捷键绑定（默认 `Z + L` 打开设置）
 - 集成 DeepSeek，可实现「合乎周礼」文言化改写与中英聊天翻译
+- 音乐播放时挂机自动进入「电影视角」卡点运镜（歌词需 DangoMusic）
 
 > 部分自动化功能可能在特定服务器被视为违规，请务必遵守所在服务器的规则。
 
@@ -34,8 +35,8 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 
 前往 [Releases](https://github.com/sweetljk/VitalAssist/releases) 下载最新版本：
 
-- **最新版本**：`VitalAssist-1.2.jar`
-- 直接下载：<https://github.com/sweetljk/VitalAssist/releases/download/v1.2/VitalAssist-1.2.jar>
+- **最新版本**：`VitalAssist-1.3.jar`
+- 直接下载：<https://github.com/sweetljk/VitalAssist/releases/download/v1.3/VitalAssist-1.3.jar>
 
 ## 功能
 
@@ -92,10 +93,36 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 - 翻译或改写失败时会自动发送原文，不会吞消息。
 - 两者同时开启时，**语言翻译优先**，不会连续调用两次 API。
 
+### 电影视角
+
+播放音乐时挂机一段时间，自动接管相机做出卡点运镜；也可以按快捷键随时进入。
+
+| 功能 | 说明 |
+|---|---|
+| 自动进入 | 主开关开启 + 音乐在播 + 连续无输入达设定秒数（默认 10 秒）后自动进入 |
+| 手动进入 | 绑定快捷键后按下立即进入，再按一次退出 |
+| 卡点运镜 | 切镜点对齐音乐小节第一拍；无节拍信号时按拍数用固定节拍换算 |
+| 镜头库 | 约 90 组构图（环绕、推拉、摇臂、螺旋、跟拍、风景、洞穴等），按维度/群系/昼夜筛选不重复抽取 |
+| 转场 | 黑淡、白闪、横擦、竖擦、光圈五种遮罩，可设时长 |
+| 上下黑边 | 电影宽银幕黑边，高度可调（默认 13% ≈ 2.39:1） |
+| 动物视角 | 自动追踪附近移动生物作为镜头主体，可排除敌对生物与蝙蝠 |
+| 歌词 | 在下方黑边显示当前歌词与翻译 |
+| 其它 | 鼓点 FOV 脉冲、手持感抖动、隐藏原版 HUD、进出状态提示 |
+
+> **歌词与节拍依赖 [DangoMusic](https://modrinth.com/mod/dango-music)**。
+> 歌词通过 DangoMusic 的网易云歌词接口获取，需要联网；未安装 DangoMusic 或该歌曲取不到歌词时，
+> 歌词区留空但不影响运镜。自动进入同样要求 DangoMusic 正在播放音乐。
+> 想显示歌词请安装 DangoMusic 并让它播放歌曲。
+
+**退出**：任何键鼠输入立即交还视角；开界面、受伤、停歌或关闭开关则用弹簧平滑收敛回玩家眼位，
+异常退出也会在下一 tick 对账恢复视角与 HUD。
+
+> 电影视角与「自由视角」「豪气冲天」争夺同一台相机，进入时会自动关闭它们。
+
 ## 安装
 
 1. 安装 **Fabric Loader** `>= 0.19.1`（Minecraft `26.1.2`）
-2. 将 `VitalAssist-1.2.jar` 放入 `.minecraft/mods`
+2. 将 `VitalAssist-1.3.jar` 放入 `.minecraft/mods`
 3. 安装依赖 Mod（见下表）
 4. 启动游戏，按 `Z + L` 打开配置界面
 
@@ -107,6 +134,7 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 | [malilib](https://modrinth.com/mod/malilib) | 必需 | 提供配置界面 |
 | [Mod Menu](https://modrinth.com/mod/modmenu) | 推荐 | 便于管理配置 |
 | Quick Shulker | 可选 | 潜影盒补货功能需要 |
+| [DangoMusic](https://modrinth.com/mod/dango-music) | 可选 | 电影视角的音乐节拍与歌词来源；未安装时手动进入仍可用，但不会自动触发 |
 
 ## 配置
 
@@ -119,6 +147,7 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 - **辅助** — 自动工具 / 进食 / 图腾、潜影盒补货、无减速
 - **视觉** — 自由视角、珍珠抛物线、烟花 / 图腾预警、隐藏实体血量
 - **聊天** — 更好的聊天、合乎周礼、语言翻译及其 API 配置与连接检测
+- **电影视角** — 挂机自动/手动卡点运镜、黑边、转场、动物视角、歌词
 
 ## 从源码构建
 
@@ -127,7 +156,7 @@ VitalAssist 是一个纯客户端的 Fabric 生存辅助 Mod，基于 **malilib*
 ./gradlew build
 ```
 
-产物位于 `build/libs/VitalAssist-1.2.jar`。
+产物位于 `build/libs/VitalAssist-1.3.jar`。
 
 ## 来源与致谢
 

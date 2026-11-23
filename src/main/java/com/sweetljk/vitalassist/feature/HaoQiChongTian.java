@@ -132,6 +132,13 @@ public final class HaoQiChongTian {
         return frozen;
     }
 
+    /** 立即结束定身并恢复相机；供其它相机接管方（如电影视角）调用。 */
+    public static void cancel() {
+        if (!frozen && savedCameraType == null) return;
+        Configs.HAO_QI_CHONG_TIAN.setBooleanValue(false);
+        deactivate(Minecraft.getInstance());
+    }
+
     public static boolean shouldCancelLook(LocalPlayer player) {
         return frozen && player == Minecraft.getInstance().player;
     }

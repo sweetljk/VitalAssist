@@ -67,6 +67,31 @@ public class Configs implements IConfigHandler {
     public static final ConfigString CHAT_TRANSLATE_API_KEY = new ConfigString("语言翻译 API Key", "", "语言翻译使用的 API Key，与合乎周礼相互独立");
     public static final ConfigString CHAT_TRANSLATE_MODEL = new ConfigString("语言翻译 Model", "deepseek-v4-pro", "语言翻译使用的模型名称");
 
+    // ---------- 电影视角 ----------
+    public static final ConfigBooleanHotkeyed CINE_ENABLED = new ConfigBooleanHotkeyed("电影视角", false, "", "音乐播放中挂机一段时间后自动接管相机，进行卡点运镜");
+    public static final ConfigInteger CINE_IDLE_SECONDS = new ConfigInteger("电影视角 挂机秒数", 10, 5, 3600, "连续无输入多少秒后自动进入电影视角");
+    public static final ConfigHotkey CINE_MANUAL = new ConfigHotkey("电影视角 手动进入", "", "按下立即进入/退出电影视角（需先开启主开关）");
+    public static final ConfigBoolean CINE_BEAT_SYNC = new ConfigBoolean("电影视角 卡点运镜", true, "按音乐节拍对齐切镜点；关闭后按固定时长切镜");
+    public static final ConfigInteger CINE_SHOT_BEATS = new ConfigInteger("电影视角 镜头拍数", 4, 1, 32, "每个镜头持续多少拍，副歌等段落会自动加快");
+    public static final ConfigDouble CINE_MIN_SHOT_SECONDS = new ConfigDouble("电影视角 最短镜头秒数", 3.0, 1.0, 12.0, "单镜头最短时长，防止快歌闪切");
+    public static final ConfigDouble CINE_SPEED = new ConfigDouble("电影视角 运镜速度", 0.7, 0.0, 4.0, "镜头运动速度倍数，0 为镜头内静止");
+    public static final ConfigInteger CINE_ENVIRONMENT_PERCENT = new ConfigInteger("电影视角 风景镜头比例", 50, 0, 100, "选择风景构图而非人物构图的百分比");
+    public static final ConfigDouble CINE_FOV_PUNCH = new ConfigDouble("电影视角 鼓点FOV脉冲", 8.0, 0.0, 20.0, "鼓点瞬间的 FOV 收放幅度（度），0 为关闭");
+    public static final ConfigDouble CINE_HANDHELD = new ConfigDouble("电影视角 手持感", 0.4, 0.0, 1.0, "机位低频抖动幅度，0 为完全稳定");
+    public static final ConfigBoolean CINE_HIDE_HUD = new ConfigBoolean("电影视角 隐藏HUD", true, "进入电影视角时隐藏原版 HUD，退出时恢复");
+    public static final ConfigBoolean CINE_BARS = new ConfigBoolean("电影视角 上下黑边", true, "在画面上下绘制电影黑边");
+    public static final ConfigInteger CINE_BAR_PERCENT = new ConfigInteger("电影视角 黑边高度", 13, 0, 25, "每侧黑边占屏幕高度的百分比，13% 约为 2.39:1");
+    public static final ConfigBoolean CINE_TRANSITION = new ConfigBoolean("电影视角 转场", true, "切镜时加入遮罩转场");
+    public static final ConfigInteger CINE_TRANSITION_EFFECT = new ConfigInteger("电影视角 转场特效", 0, 0, 5, "0=随机，1=黑淡，2=白闪，3=横擦，4=竖擦，5=光圈");
+    public static final ConfigDouble CINE_TRANSITION_SECONDS = new ConfigDouble("电影视角 转场时长", 1.0, 0.1, 3.0, "转场每半程的时长（秒）");
+    public static final ConfigBoolean CINE_MOB_FOCUS = new ConfigBoolean("电影视角 动物视角", true, "自动追踪附近的移动生物作为镜头主体");
+    public static final ConfigDouble CINE_MOB_RANGE = new ConfigDouble("电影视角 动物视角搜索半径", 32.0, 6.0, 64.0, "搜索移动生物的半径（格）");
+    public static final ConfigDouble CINE_TRACKING_SOFTNESS = new ConfigDouble("电影视角 追焦软度", 0.8, 0.1, 8.0, "朝向与位置追踪的软度（秒），越大越柔和");
+    public static final ConfigBoolean CINE_EXCLUDE_HOSTILE = new ConfigBoolean("电影视角 排除敌对生物", true, "不把敌对生物作为追焦主体");
+    public static final ConfigBoolean CINE_EXCLUDE_BATS = new ConfigBoolean("电影视角 排除蝙蝠", true, "不把蝙蝠作为追焦主体");
+    public static final ConfigBoolean CINE_LYRICS = new ConfigBoolean("电影视角 歌词显示", true, "在下方黑边显示当前歌曲歌词（需安装 DangoMusic 且能取到歌词）");
+    public static final ConfigBoolean CINE_STATUS_MESSAGES = new ConfigBoolean("电影视角 状态提示", true, "进出电影视角时在动作栏提示");
+
     public static final ImmutableList<IConfigBase> ALL_CONFIGS = createAllConfigs();
     public static final ImmutableList<IHotkeyTogglable> SWITCH_KEY = ImmutableList.of(
             AUTO_TOOL,
@@ -78,9 +103,10 @@ public class Configs implements IConfigHandler {
             NO_SLOW,
             BETTER_CHAT,
             ZHOU_LI,
-            CHAT_TRANSLATE
+            CHAT_TRANSLATE,
+            CINE_ENABLED
     );
-    public static final ImmutableList<ConfigHotkey> KEY_LIST = ImmutableList.of(OPEN_CONFIG, SILENT_FIREWORK);
+    public static final ImmutableList<ConfigHotkey> KEY_LIST = ImmutableList.of(OPEN_CONFIG, SILENT_FIREWORK, CINE_MANUAL);
 
     private static ImmutableList<IConfigBase> createAllConfigs() {
         List<IConfigBase> list = new ArrayList<>();
@@ -124,6 +150,29 @@ public class Configs implements IConfigHandler {
         list.add(CHAT_TRANSLATE_API_BASE);
         list.add(CHAT_TRANSLATE_API_KEY);
         list.add(CHAT_TRANSLATE_MODEL);
+        list.add(CINE_ENABLED);
+        list.add(CINE_IDLE_SECONDS);
+        list.add(CINE_MANUAL);
+        list.add(CINE_BEAT_SYNC);
+        list.add(CINE_SHOT_BEATS);
+        list.add(CINE_MIN_SHOT_SECONDS);
+        list.add(CINE_SPEED);
+        list.add(CINE_ENVIRONMENT_PERCENT);
+        list.add(CINE_FOV_PUNCH);
+        list.add(CINE_HANDHELD);
+        list.add(CINE_HIDE_HUD);
+        list.add(CINE_BARS);
+        list.add(CINE_BAR_PERCENT);
+        list.add(CINE_TRANSITION);
+        list.add(CINE_TRANSITION_EFFECT);
+        list.add(CINE_TRANSITION_SECONDS);
+        list.add(CINE_MOB_FOCUS);
+        list.add(CINE_MOB_RANGE);
+        list.add(CINE_TRACKING_SOFTNESS);
+        list.add(CINE_EXCLUDE_HOSTILE);
+        list.add(CINE_EXCLUDE_BATS);
+        list.add(CINE_LYRICS);
+        list.add(CINE_STATUS_MESSAGES);
         return ImmutableList.copyOf(list);
     }
 
