@@ -2,7 +2,6 @@ package com.sweetljk.vitalassist.feature;
 
 import fi.dy.masa.malilib.hotkeys.IKeybind;
 import net.minecraft.client.Minecraft;
-import org.lwjgl.glfw.GLFW;
 import com.sweetljk.vitalassist.config.Configs;
 
 public final class SilentUseHotkeys {
@@ -18,7 +17,7 @@ public final class SilentUseHotkeys {
         }
 
         SilentUseAction.tick();
-        if (client.screen != null) return;
+        if (client.gui.screen() != null) return;
 
         boolean fireworkPressed = isPressed(client, Configs.SILENT_FIREWORK.getKeybind());
 
@@ -29,16 +28,7 @@ public final class SilentUseHotkeys {
 
     private static boolean isPressed(Minecraft client, IKeybind keybind) {
         if (!keybind.isValid() || keybind.getKeys().isEmpty()) return false;
-        long handle = client.getWindow().handle();
-        for (int key : keybind.getKeys()) {
-            if (key < 0) {
-                int button = key + 100;
-                if (button < GLFW.GLFW_MOUSE_BUTTON_1 || button > GLFW.GLFW_MOUSE_BUTTON_LAST) return false;
-                if (GLFW.glfwGetMouseButton(handle, button) != GLFW.GLFW_PRESS) return false;
-            } else if (GLFW.glfwGetKey(handle, key) != GLFW.GLFW_PRESS) {
-                return false;
-            }
-        }
-        return true;
+        // 26.3 移除了 LWJGL/GLFW，直接问 malilib 自己记录的按键状态（后端无关）。
+        return keybind.isKeybindHeld();
     }
 }

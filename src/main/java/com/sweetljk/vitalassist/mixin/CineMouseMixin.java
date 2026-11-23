@@ -27,8 +27,8 @@ public abstract class CineMouseMixin {
         }
     }
 
-    @Inject(method = "onMove(JDD)V", at = @At("HEAD"), require = 1, remap = false)
-    private void vitalassist$cineMove(long window, double x, double y, CallbackInfo ci) {
+    @Inject(method = "onMove(JDDDD)V", at = @At("HEAD"), require = 1, remap = false)
+    private void vitalassist$cineMove(long window, double x, double y, double deltaX, double deltaY, CallbackInfo ci) {
         if (window != 0L && window == Minecraft.getInstance().getWindow().handle()) {
             CineProbe.onMove(x, y);
         }

@@ -31,10 +31,10 @@ repositories {
         url = "https://maven.terraformersmc.com/"
     }
     maven {
-        name = "CurseMaven"
-        url = "https://cursemaven.com/"
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
         content {
-            includeGroup "curse.maven"
+            includeGroup "maven.modrinth"
         }
     }
 }
@@ -45,20 +45,21 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    implementation "curse.maven:malilib-303119:${project.malilib_file_id}"
+    implementation "maven.modrinth:malilib:${project.malilib_version}"
     implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
-    implementation files("quickshulker-3.0.1-26.1.jar")
 }
 
 processResources {
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
     inputs.property "loader_version", project.loader_version
+    inputs.property "loader_min_version", project.loader_min_version
     filteringCharset "UTF-8"
 
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
                 "minecraft_version": project.minecraft_version,
+                "loader_min_version": project.loader_min_version,
                 "loader_version": project.loader_version
     }
 }

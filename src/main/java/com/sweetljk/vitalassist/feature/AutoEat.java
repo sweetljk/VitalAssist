@@ -14,7 +14,7 @@ public final class AutoEat {
 
     public static void tick(Minecraft client) {
         if (!Configs.AUTO_EAT.getBooleanValue() || client.player == null || client.gameMode == null) return;
-        if (client.screen != null) return;
+        if (client.gui.screen() != null) return;
 
         boolean shouldEat = client.player.getFoodData().getFoodLevel() <= Configs.AUTO_EAT_HUNGER.getIntegerValue()
                 || client.player.getHealth() <= Configs.AUTO_EAT_HEALTH.getDoubleValue();

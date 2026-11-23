@@ -16,7 +16,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
 import com.sweetljk.vitalassist.config.Configs;
+import com.sweetljk.vitalassist.mixin.LivingEntityAccessor;
 import com.sweetljk.vitalassist.mixin.PlayerEntityAccessor;
+import com.sweetljk.vitalassist.mixin.SwingStateAccessor;
 
 import java.util.UUID;
 
@@ -135,12 +137,17 @@ public final class Freecam {
             fakePlayer.setItemSlot(slot, player.getItemBySlot(slot).copy());
         }
 
-        // 同步挥手动画
-        fakePlayer.swinging = player.swinging;
-        fakePlayer.swingingArm = player.swingingArm;
-        fakePlayer.swingTime = player.swingTime;
-        fakePlayer.oAttackAnim = player.oAttackAnim;
-        fakePlayer.attackAnim = player.attackAnim;
+        // 同步挥手动画（26.3 起挥手进度封装在 LivingEntity.SwingState 里）
+        syncSwing(player, fakePlayer);
+    }
+
+    private static void syncSwing(LocalPlayer player, RemotePlayer fakePlayer) {
+        SwingStateAccessor source = (SwingStateAccessor) ((LivingEntityAccessor) player).vitalassist$swingState();
+        SwingStateAccessor target = (SwingStateAccessor) ((LivingEntityAccessor) fakePlayer).vitalassist$swingState();
+        target.vitalassist$setCurrentSwing(source.vitalassist$getCurrentSwing());
+        target.vitalassist$setTicks(source.vitalassist$getTicks());
+        target.vitalassist$setOldAnimation(source.vitalassist$getOldAnimation());
+        target.vitalassist$setAnimation(source.vitalassist$getAnimation());
     }
 
     private static void syncScale(LocalPlayer player, RemotePlayer fakePlayer) {

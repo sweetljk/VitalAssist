@@ -1,5 +1,6 @@
 package com.sweetljk.vitalassist.cine;
 
+import com.sweetljk.vitalassist.mixin.HudAccessor;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -40,7 +41,7 @@ public final class CineProbe implements CineDirector.SceneProbe {
         this.mc = mc;
         this.player = mc.player;
         this.level = mc.level;
-        this.screen = mc.screen;
+        this.screen = mc.gui.screen();
         this.skyVisible = level != null && player != null
                 && level.canSeeSky(net.minecraft.core.BlockPos.containing(player.getX(), player.getEyeY(), player.getZ()));
         this.dimensionKind = level == null ? -1 : level.dimensionTypeRegistration().unwrapKey()
@@ -105,9 +106,9 @@ public final class CineProbe implements CineDirector.SceneProbe {
         previousCameraType = mc.options.getCameraType();
         owned = true;
         mc.options.setCameraType(CameraType.THIRD_PERSON_BACK);
-        if (CineConfig.snapshot().hideHud() && !mc.options.hideGui) {
+        if (CineConfig.snapshot().hideHud() && !mc.gui.hud.isHidden()) {
             hudOverridden = true;
-            mc.options.hideGui = true;
+            ((HudAccessor) mc.gui.hud).vitalassist$setHidden(true);
         }
     }
 
@@ -119,7 +120,7 @@ public final class CineProbe implements CineDirector.SceneProbe {
             if (previousCameraType != null && mc.options.getCameraType() == CameraType.THIRD_PERSON_BACK) {
                 mc.options.setCameraType(previousCameraType);
             }
-            if (hudOverridden && mc.options.hideGui) mc.options.hideGui = false;
+            if (hudOverridden && mc.gui.hud.isHidden()) ((HudAccessor) mc.gui.hud).vitalassist$setHidden(false);
         } finally {
             previousCameraType = null;
             owned = false;

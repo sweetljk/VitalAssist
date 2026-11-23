@@ -14,9 +14,9 @@ final class InventoryHelper {
 
     static boolean canOperateInventory(Minecraft client) {
         if (client.player == null || client.gameMode == null) return false;
-        if (client.screen == null) return true;
+        if (client.gui.screen() == null) return true;
         if (ShulkerRestock.hasPendingAction()) return true;
-        return client.screen instanceof InventoryScreen || client.screen instanceof CreativeModeInventoryScreen;
+        return client.gui.screen() instanceof InventoryScreen || client.gui.screen() instanceof CreativeModeInventoryScreen;
     }
 
     static int findItemInInventory(Minecraft client, Item item) {

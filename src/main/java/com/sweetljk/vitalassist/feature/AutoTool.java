@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import org.lwjgl.glfw.GLFW;
 import com.sweetljk.vitalassist.config.Configs;
 
 public final class AutoTool {
@@ -19,12 +18,12 @@ public final class AutoTool {
     }
 
     public static void tick(Minecraft client) {
-        if (!Configs.AUTO_TOOL.getBooleanValue() || client.player == null || client.level == null || client.screen != null) {
+        if (!Configs.AUTO_TOOL.getBooleanValue() || client.player == null || client.level == null || client.gui.screen() != null) {
             reset();
             return;
         }
 
-        if (GLFW.glfwGetMouseButton(client.getWindow().handle(), GLFW.GLFW_MOUSE_BUTTON_LEFT) != GLFW.GLFW_PRESS) {
+        if (!client.mouseHandler.isLeftPressed()) {
             if (previousSlot != -1) stopMining();
             return;
         }
@@ -36,7 +35,7 @@ public final class AutoTool {
 
     public static void beforeBlockAttack(BlockPos pos) {
         Minecraft client = Minecraft.getInstance();
-        if (!Configs.AUTO_TOOL.getBooleanValue() || client.player == null || client.level == null || client.screen != null) return;
+        if (!Configs.AUTO_TOOL.getBooleanValue() || client.player == null || client.level == null || client.gui.screen() != null) return;
 
         int currentSlot = InventoryHelper.getSelectedHotbarSlot(client);
         if (previousSlot == -1) previousSlot = currentSlot;
